@@ -3,30 +3,39 @@ package digitalskillsserver.controllers;
 import digitalskillsserver.domain.Logging;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class LoggingController {
 
-    HashMap<String, Logging> logs = new HashMap<String, Logging>();
+    HashMap<Integer, List<Logging>> logs = new HashMap<Integer, List<Logging>>();
 
+    // need a way to clear when the UI resets
     @RequestMapping(method = RequestMethod.GET, value = "/logging")
-    @CrossOrigin(origins = "https://jolly-fermat-db4c86.netlify.app/")
-    public Logging clickCount(@RequestParam(value = "id") String id) {
-        return new Logging();
+    @CrossOrigin()
+    public List<String> getLogs(@RequestParam Integer level) {
+        System.out.println(logs.get(level));
+        ArrayList<String> logList = new ArrayList<String>();
+        for (Logging log: logs.get(level)) {
+            logList.add(log.getId());
+        }
+        return logList;
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/logging")
-    @CrossOrigin(origins = "https://jolly-fermat-db4c86.netlify.app/")
+    // "https://jolly-fermat-db4c86.netlify.app/"
+    @CrossOrigin()
     public void logClick(@RequestBody Logging newLogging) {
-        if (logs.containsKey(newLogging.getId())) {
-            logs.get(newLogging.getId()).increaseClickCount();
-            logs.get(newLogging.getId()).setTime(newLogging.getTime());
-            System.out.println("Old: " + logs.get(newLogging.getId()));
+        System.out.print("Log Click: " + newLogging.toString() + "\n");
+        if (logs.containsKey(newLogging.getLevel())) {
+            logs.get(newLogging.getLevel()).add(newLogging);
         }
         else {
-            logs.put(newLogging.getId(), newLogging);
-            System.out.println("New: " + newLogging);
+            ArrayList<Logging> newList = new ArrayList<Logging>();
+            newList.add(newLogging);
+            logs.put(newLogging.getLevel(), newList);
         }
     }
 }

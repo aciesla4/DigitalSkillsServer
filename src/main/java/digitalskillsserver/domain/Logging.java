@@ -4,6 +4,7 @@ import java.time.LocalTime;
 
 public class Logging {
 
+    private int level;
     private String id;
     private int clickCount;
     private Double time;
@@ -11,6 +12,10 @@ public class Logging {
     public Logging () {
         this.clickCount = 1;
     }
+
+    public int getLevel() { return level; }
+
+    public void setLevel(int level) { this.level = level; }
 
     public String getId() {
         return id;
@@ -34,7 +39,7 @@ public class Logging {
 
     @Override
     public String toString(){
-        return id + ": " + clickCount + ", " + time;
+        return "Level" + level + ", ID: " + id + ", Clicks: " + clickCount + ", Time: " + time;
     }
 
 }
