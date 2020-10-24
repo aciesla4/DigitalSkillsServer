@@ -1,13 +1,14 @@
 package digitalskillsserver.domain;
 
-import java.time.LocalTime;
+import java.util.Date;
 
 public class Logging {
 
     private int level;
     private String id;
     private int clickCount;
-    private Double time;
+    private Date timestamp;
+    private double time;
 
     public Logging () {
         this.clickCount = 1;
@@ -29,17 +30,21 @@ public class Logging {
         this.clickCount++;
     }
 
-    public void setTime(Double time) {
-        this.time = time;
+    public void setTimestamp(Date timestamp) {
+        this.timestamp = timestamp;
     }
 
-    public Double getTime() {
-        return time;
+    public Date getTimestamp() {
+        return timestamp;
     }
+
+    public void setTime(double time) { this.time = time; }
+
+    public double getTime() { return time; }
 
     @Override
     public String toString(){
-        return "Level" + level + ", ID: " + id + ", Clicks: " + clickCount + ", Time: " + time;
+        return "Level" + level + ", ID: " + id + ", Clicks: " + clickCount + ", Time: " + timestamp;
     }
 
 }
