@@ -12,7 +12,6 @@ public class LoggingController {
 
     HashMap<Integer, List<Logging>> logs = new HashMap<Integer, List<Logging>>();
 
-    // need a way to clear when the UI resets
     @RequestMapping(method = RequestMethod.GET, value = "/logging")
     @CrossOrigin()
     public List<String> getLogs(@RequestParam Integer level) {
@@ -37,5 +36,12 @@ public class LoggingController {
             newList.add(newLogging);
             logs.put(newLogging.getLevel(), newList);
         }
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/logging")
+    @CrossOrigin()
+    public void clearLogs() {
+        System.out.println("********** CLEARING LOGS **********");
+        logs = new HashMap<Integer, List<Logging>>();
     }
 }
