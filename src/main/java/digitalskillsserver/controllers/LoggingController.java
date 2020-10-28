@@ -1,12 +1,9 @@
 package digitalskillsserver.controllers;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import digitalskillsserver.domain.Logging;
-import digitalskillsserver.domain.Time;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -14,7 +11,6 @@ import java.util.List;
 public class LoggingController {
 
     HashMap<Integer, List<Logging>> logs = new HashMap<Integer, List<Logging>>();
-    Time time = new Time();
 
     @RequestMapping(method = RequestMethod.GET, value = "/logging")
     @CrossOrigin()
@@ -26,38 +22,8 @@ public class LoggingController {
         return logList;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value="/logging/startTime")
-    @CrossOrigin
-    public void logStartTime(@RequestBody Time startTime) {
-        time.setStartTime(startTime.getStartTime().getTime());
-        System.out.println("---START TIME: " + startTime.getStartTime() + "---");
-    }
-
-    @RequestMapping(method = RequestMethod.POST, value="/logging/endTime")
-    @CrossOrigin
-    public void logEndTime(@RequestBody Time endTime) {
-        time.setEndTime(endTime.getEndTime().getTime());
-        System.out.println("---END TIME: " + endTime.getEndTime() + "---");
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value="/logging/time")
-    @CrossOrigin()
-    public long getLevelTime() {
-        System.out.println("TOTAL TIME: " + time.getTotalTime());
-        return time.getTotalTime();
-    }
-
-    @RequestMapping(method = RequestMethod.GET, value="/logging/score")
-    @CrossOrigin()
-    public double getScore() {
-        double firstLogTime = logs.get(1).get(0).getTimestamp().getTime();
-        double lastLogTime = logs.get(16).get(logs.get(16).size() - 1).getTimestamp().getTime();
-        double totalTime = (firstLogTime - lastLogTime) / 1000;
-        return totalTime;
-    }
-
     @RequestMapping(method = RequestMethod.POST, value = "/logging")
-    // "https://jolly-fermat-db4c86.netlify.app/"
+    // "https://digital-skills-assessment.netlify.app/"
     @CrossOrigin()
     public void logClick(@RequestBody Logging newLogging) {
         System.out.println(newLogging.toString());
@@ -83,6 +49,5 @@ public class LoggingController {
     public void clearLogs() {
         System.out.println("********** CLEARING LOGS **********");
         logs = new HashMap<Integer, List<Logging>>();
-        time = new Time();
     }
 }
