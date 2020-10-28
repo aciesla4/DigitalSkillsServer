@@ -1,9 +1,12 @@
 package digitalskillsserver.controllers;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import digitalskillsserver.domain.Logging;
+import digitalskillsserver.domain.Time;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -11,6 +14,7 @@ import java.util.List;
 public class LoggingController {
 
     HashMap<Integer, List<Logging>> logs = new HashMap<Integer, List<Logging>>();
+    Time time = new Time();
 
     @RequestMapping(method = RequestMethod.GET, value = "/logging")
     @CrossOrigin()
@@ -22,14 +26,26 @@ public class LoggingController {
         return logList;
     }
 
-//    @RequestMapping(method = RequestMethod.GET, value="/logging/time")
-//    @CrossOrigin()
-//    public double getLevelTime(@RequestParam Integer level) {
-//        List<Logging> logList = logs.get(level);
-//        double time = (logList.get(logList.size() - 1).getTimestamp().getTime() - logList.get(0).getTimestamp().getTime()) / 1000;
-//        System.out.println("TOTAL TIME: " + time);
-//        return time;
-//    }
+    @RequestMapping(method = RequestMethod.POST, value="/logging/startTime")
+    @CrossOrigin
+    public void logStartTime(@RequestBody Time startTime) {
+        time.setStartTime(startTime.getStartTime().getTime());
+        System.out.println("---START TIME: " + startTime.getStartTime() + "---");
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value="/logging/endTime")
+    @CrossOrigin
+    public void logEndTime(@RequestBody Time endTime) {
+        time.setEndTime(endTime.getEndTime().getTime());
+        System.out.println("---END TIME: " + endTime.getEndTime() + "---");
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value="/logging/time")
+    @CrossOrigin()
+    public long getLevelTime() {
+        System.out.println("TOTAL TIME: " + time.getTotalTime());
+        return time.getTotalTime();
+    }
 
     @RequestMapping(method = RequestMethod.GET, value="/logging/score")
     @CrossOrigin()
@@ -67,5 +83,6 @@ public class LoggingController {
     public void clearLogs() {
         System.out.println("********** CLEARING LOGS **********");
         logs = new HashMap<Integer, List<Logging>>();
+        time = new Time();
     }
 }
